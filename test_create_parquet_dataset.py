@@ -32,4 +32,4 @@ class TestCreateParquetDataset(unittest.TestCase):
             create_parquet_dataset(self.input_file, self.output_file)
 
             parquet_file = pq.ParquetFile(self.output_file)
-            print(parquet_file.metadata)
+            self.assertEqual(parquet_file.metadata.format_version, '1.0')
