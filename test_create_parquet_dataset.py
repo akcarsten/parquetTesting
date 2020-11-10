@@ -13,11 +13,8 @@ class TestCreateParquetDataset(unittest.TestCase):
         def tearDown(self):
             os.remove(self.test_parquet_file)
 
-        def test_csv_imported_as_dataframe(self):
+        def test_if_parquet_file_is_created(self):
 
-                df_result = create_parquet_dataset(self.test_csv_file)
-                df_expected = pd.read_csv(self.test_csv_file)
-
-                pd.testing.assert_frame_equal(df_result, df_expected)
+                create_parquet_dataset(self.test_csv_file)
 
                 self.assertTrue(os.path.isfile(self.test_parquet_file))
