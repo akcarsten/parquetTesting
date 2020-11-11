@@ -42,5 +42,11 @@ class TestCreateParquetDataset(unittest.TestCase):
 
             create_parquet_dataset(self.input_file, self.output_file, split=True)
 
-            print(os.listdir(self.output_path))
-            #self.assertEqual()
+            dataset = pq.ParquetDataset(self.output_path)
+            table = dataset.read()
+            n_files = len(os.listdir(self.output_path))
+
+            self.assertEqual(n_files, 30)
+            self.assertEqual(table.to_pandas().shape[0], 3000000)
+
+        #def test_add_column_in_random_file(self):
