@@ -9,13 +9,14 @@ class TestCreateParquetDataset(unittest.TestCase):
 
         def setUp(self):
             self.input_file = 'data/btcusd.csv'
-            self.output_file = 'data/tmp/stest.parquet'
+            self.output_path = 'data/tmp'
+            self.output_file = '{}/test.parquet'.format(self.output_path)
             self.test_columns = ['time', 'open', 'close', 'high', 'low', 'volume']
 
             os.mkdir('data/tmp')
 
         def tearDown(self):
-            shutil.rmtree('data/tmp')
+            shutil.rmtree(self.output_path)
 
         def test_if_parquet_file_is_created(self):
 
@@ -38,4 +39,8 @@ class TestCreateParquetDataset(unittest.TestCase):
                 self.assertEqual(parquet_file.metadata.format_version, iver)
 
         def test_creating_a_dataset(self):
-            print('test not implemeted yet')
+
+            create_parquet_dataset(self.input_file, self.output_file, split=True)
+
+            print(os.listdir(self.output_path))
+            #self.assertEqual()
