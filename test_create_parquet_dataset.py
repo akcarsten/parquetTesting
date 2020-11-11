@@ -1,6 +1,7 @@
 import unittest
 import pandas as pd
 import os.path
+import shutil
 from create_parquet_dataset import *
 
 
@@ -8,15 +9,13 @@ class TestCreateParquetDataset(unittest.TestCase):
 
         def setUp(self):
             self.input_file = 'data/btcusd.csv'
-            self.output_file = 'data/test.parquet'
+            self.output_file = 'data/tmp/stest.parquet'
             self.test_columns = ['time', 'open', 'close', 'high', 'low', 'volume']
 
-        def tearDown(self):
+            os.mkdir('data/tmp')
 
-            for f in os.listdir('data/'):
-                if not f.endswith('.parquet'):
-                    continue
-                os.remove(os.path.join('data/', f))
+        def tearDown(self):
+            shutil.rmtree('data/tmp')
 
         def test_if_parquet_file_is_created(self):
 
