@@ -52,3 +52,7 @@ class TestCreateParquetDataset(unittest.TestCase):
         def test_add_column_in_random_file(self):
 
             create_parquet_dataset(self.input_file, self.output_file, split=True, add_random=True)
+
+            # Trying to load a dataset in which one parquet file has an
+            # extra column will raise a ValueError 
+            self.assertRaises(ValueError, pq.ParquetDataset, self.output_path)
