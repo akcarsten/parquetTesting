@@ -2,18 +2,23 @@ import unittest
 import pandas as pd
 import os.path
 import shutil
+import zipfile
 from create_parquet_dataset import *
 
 
 class TestCreateParquetDataset(unittest.TestCase):
 
         def setUp(self):
-            self.input_file = 'data/btcusd.csv'
+            self.data_file = 'data/btcusd.zip'
             self.output_path = 'data/tmp'
+            self.input_file = '{}/btcusd.csv'.format(self.output_path)
             self.output_file = '{}/test.parquet'.format(self.output_path)
             self.test_columns = ['time', 'open', 'close', 'high', 'low', 'volume']
 
             os.mkdir('data/tmp')
+
+            with zipfile.ZipFile(self.data_file, 'r') as zip_ref:
+                zip_ref.extractall(self.output_path)
 
         def tearDown(self):
             shutil.rmtree(self.output_path)
@@ -42,6 +47,9 @@ class TestCreateParquetDataset(unittest.TestCase):
 
             create_parquet_dataset(self.input_file, self.output_file, split=True)
 
+            # Remove the .csv file to read the parquet files as a dataset
+            os.remove(self.input_file)
+
             dataset = pq.ParquetDataset(self.output_path)
             table = dataset.read()
             n_files = len(os.listdir(self.output_path))
@@ -54,5 +62,5 @@ class TestCreateParquetDataset(unittest.TestCase):
             create_parquet_dataset(self.input_file, self.output_file, split=True, add_random=True)
 
             # Trying to load a dataset in which one parquet file has an
-            # extra column will raise a ValueError 
+            # extra column will raise a ValueError
             self.assertRaises(ValueError, pq.ParquetDataset, self.output_path)
