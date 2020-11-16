@@ -15,9 +15,6 @@ char
 clustered
 testing
 left_overs
-data*
-results
-model
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
