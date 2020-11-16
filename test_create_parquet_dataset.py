@@ -49,4 +49,6 @@ class TestCreateParquetDataset(unittest.TestCase):
             self.assertEqual(n_files, 30)
             self.assertEqual(table.to_pandas().shape[0], 3000000)
 
-        #def test_add_column_in_random_file(self):
+        def test_add_column_in_random_file(self):
+
+            create_parquet_dataset(self.input_file, self.output_file, split=True, add_random=True)
